@@ -1,0 +1,102 @@
+
+\usepackage{datetime}
+\usepackage{fancyhdr}
+\usepackage[outermarks]{titlesec}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage[usenames]{color}
+\usepackage{helvet}
+\usepackage{times}
+\usepackage{natbib}
+\usepackage{import}
+\usepackage{tabularx}
+\usepackage{xspace}
+\usepackage{scrextend}
+%\usepackage{parskip}
+\usepackage[normalem]{ulem}
+\usepackage{scrwfile} % Stops "No room for a new \write" complaint
+\usepackage{xcolor}
+\usepackage{colortbl}
+% Big tables summarizing plans:
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
+\usepackage{pdftexcmds}
+
+% Hyperref - always load as the last package!
+\usepackage[linktocpage=false]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor=DESCred, %blue,
+    filecolor=DESCred, %blue,
+    linkcolor=DESCred, %blue,
+    urlcolor=DESCred %blue,
+}
+\usepackage{hypcap}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cross-references
+
+\renewcommand*{\figureautorefname}{Figure}
+\renewcommand*{\tableautorefname}{Table}
+\renewcommand*{\equationautorefname}{Equation}
+\renewcommand*{\sectionautorefname}{Section}
+\renewcommand*{\subsectionautorefname}{Section}
+\renewcommand*{\subsubsectionautorefname}{Key~Project}
+\renewcommand*{\paragraphautorefname}{Deliverable}
+\renewcommand*{\subparagraphautorefname}{Key~Task}
+\renewcommand*{\appendixautorefname}{Appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\bfseries{\fontseries \bfdefault \selectfont \boldmath} % make math mode bold in section titles
+\renewcommand{\thesection}{\arabic{section}}
+\setcounter{secnumdepth}{5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  make \paragraph and \subparagraph behave like other section commands
+% THIS IS FROM THE DESI SRP.
+
+    \titleformat{\section}
+      {\normalfont\Large\bfseries}{\thesection}{1em}{}
+    \titleformat{\subsection}
+      {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+    \titleformat{\subsubsection}
+      {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+    \titleformat{\paragraph}
+      {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+    \titleformat{\subparagraph}
+      {\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{}
+
+    \titlespacing*{\section}      {0pt}{3.5ex plus 1ex minus .2ex} {2.3ex plus .2ex}
+    \titlespacing*{\subsection}   {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+    \titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+    \titlespacing*{\paragraph}    {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+    \titlespacing*{\subparagraph} {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\linespread{1.1}
+ \addtolength{\hoffset}{-0.0cm}
+ \setlength{\topmargin}{-0.in}
+ \setlength{\textheight}{8.25in}
+\setlength{\footskip}{1.5cm} %{0.75cm}
+\setlength{\textwidth}{6.25in}
+\setlength{\evensidemargin}{1in}
+\setlength{\oddsidemargin}{0in}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{0.3cm}
+%  \usepackage{paralist}
+%\setlength{\pltopsep}{0pt}
+%\setlength{\plpartopsep}{0pt}
+
+\def\tcr{\textcolor{red}}
+\def\tcb{\textcolor{blue}}
+\def\accent{\it}
+\def\vs{\vspace{0.5cm}}
+\def\hs{\hspace{0.5cm}}
+\urlstyle{rm}

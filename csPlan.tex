@@ -1,0 +1,82 @@
+% ====================================================================
+
+\documentclass[12pt]{report}
+
+\include{doc_settings} % formatting for doc, copied from SRM
+
+\include{macros}       % commands and abbreviations, adapted from SRM doc_macros.tex but specific to CI reports
+
+% ====================================================================
+\usepackage{float}
+
+\begin{document}
+
+%%%%% TITLE PAGE
+\pagestyle{empty}
+
+\vspace*{0.3\textheight}
+
+\begin{center}
+{\Huge\bfseries LSST DESC Cosmological Simulations Plan and Needs Assessment}
+\end{center}
+
+\vspace*{0.1\textheight}
+
+\begin{center}
+{\it Version 0.1, April 2016}
+\end{center}
+
+\begin{figure}[!b]
+\centering\includegraphics[width=5cm,angle=0]{desc-logo.png}
+\end{figure}
+
+%%%%% TABLE OF CONTENTS
+\clearpage
+\maketoc
+\label{toc}
+\clearpage
+
+%%%%%%%% FOOTER
+\pagestyle{fancy}
+\fancyfoot{} % clear all footer fields
+\fancyfoot[R]{\thepage}  % page number in "outer" position of footer line
+\fancyfoot[L]{\footernavigationbar}  % navigation to contents etc
+
+%%%%%%%% HEADER
+\fancyhead[L]{}
+\fancyhead[R]{\docheader}
+\renewcommand{\footrulewidth}{1pt}
+
+
+% ====================================================================
+
+% FRONT MATTER
+
+\input{cs/preamble}
+
+% ====================================================================
+
+% RECOMMENDATIONS:
+
+% ====================================================================
+
+% USE CASES
+
+
+% ====================================================================
+
+%%%%%%%% END MATTER
+
+% \include{appendices}
+
+% \include{acknowledgements}
+
+\bibliographystyle{apj}
+\nocite{*}
+\bibliography{references}
+
+% ====================================================================
+
+\end{document}
+
+% ====================================================================

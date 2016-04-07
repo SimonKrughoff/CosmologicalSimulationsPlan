@@ -1,0 +1,565 @@
+%%%%% MACROS AND SETTINGS FOR CS REPORTS
+
+%=====================================================================
+% SET UP RECOMMENDATION COMMANDS
+%
+% Adapted from Science Roadmap file, Rachel Bean & Phil Marshall Summer 2015
+% Based on commands written by Daniel Einsenstein for DESI SRP April 2015
+%=====================================================================
+\usepackage{xifthen}
+\usepackage{xspace}
+
+% Number tables and figures by section
+\usepackage{chngcntr}
+\counterwithin{table}{section}
+\counterwithin{figure}{section}
+
+% Enable sensible resizing of lists of projects and recommendations:
+\usepackage{tocloft}
+\renewcommand\cftparafont{\small}
+\renewcommand\cftparapagefont{\small}
+\renewcommand\cftsubparafont{\footnotesize}
+\renewcommand\cftsubparapagefont{\footnotesize}
+
+\usepackage{datetime}
+
+\newcommand{\docheader}{{LSST DESC CS Report}}
+
+% --------------------------------------------------------------------
+
+\makeatletter
+
+% --------------------------------------------------------------------
+% REFERENCING COMMANDS
+
+% Include down to the subsection level in the table of contents:
+\setcounter{tocdepth}{2}
+
+% \counterwithin{section}{chapter}
+% \counterwithin{table}{chapter}
+% \counterwithin{figure}{chapter}
+
+\renewcommand*{\chapterautorefname}{Chapter}
+
+\newcommand{\relabel}[3]{\@bsphack
+    \protected@write\@auxout{}%
+        % {\string\newlabel{#2}{{#1}{#3}{\relax}{#2}{}}}%
+        {\string\newlabel{#2}{{#1}{\thepage}{\relax}{#3}{}}}%
+    \@esphack}
+
+% --------------------------------------------------------------------
+
+% POINT OF CONTACT
+
+% Contact list - repo in URL must be set correctly to enable queries to be made:
+\newcommand{\contact}[2]{%
+\href{https://github.com/DarkEnergyScienceCollaboration/CosmologicalSimulationsPlan/issues/new?title=Question:\%20\&body=#2:\%20}{{\it #1}}%
+}
+\newcommand{\dontcontact}[2]{{\it #1}}
+
+% Link to issue thread:
+\newcommand{\issue}[1]{%
+\href{https://github.com/DarkEnergyScienceCollaboration/CosmologicalSimulationsPlan/issues/#1}{\#{#1}}%
+}
+
+
+% --------------------------------------------------------------------
+
+% USEFUL MACROS
+
+% The \todo macro can be used to mark missing items or to pose questions to the group.
+\newcommand{\todo}[1]{\noindent{\tcb{[TODO: #1]}}}
+
+% Uncomment the following line to make the \todo items invisible.
+%\renewcommand\todo[1]{\relax}
+
+% List of Recommendations, using Table of Contents commands:
+\newcommand{\listofrecommendations}{
+  \@starttoc{tor}
+}
+
+
+% List of projects, designed to act as a table of contents in each
+% section:
+\newcommand{\listofjusttheserecommendations}[1]{
+  \vskip\baselineskip
+  {\bf \nameref{sec:\headerstring} Recommendations:}
+  \phantomsection\label{tab:\headerstring:recommendations}
+  \medskip
+  \hrule
+  % \@starttoc{#1}
+  \@starttoc{\headerstring.tor}
+  \hspace{-0.5em}
+  \medskip
+  \hrule
+  \vskip\baselineskip
+  \vskip\baselineskip
+}
+
+% --------------------------------------------------------------------
+
+% COUNTERS AND VARIABLES:
+
+\newcounter{recommendation}
+
+\newcommand{\resetnumbering}{
+   \setcounter{subsubsection}{0}
+   \setcounter{paragraph}{0}
+   \setcounter{subparagraph}{0}
+   \setcounter{equation}{0}
+   \setcounter{recommendation}{0}
+}
+
+% Prefix section title
+\newcommand{\sectionstring}{}
+% Prefix for key projects and recommendations in each section (SL, WL etc)
+\newcommand{\headerstring}{}
+% Recommendations are organised by sections, whose names
+% are used in formatting the titles etc. ENV, FRW, WKF, OPS
+
+\def\myaddcontentsline#1#2#3#4{\addtocontents{#1}{\protect\contentsline{#2}{#3}{#4}{}}}
+
+% --------------------------------------------------------------------
+
+% TABLE OF CONTENTS
+
+\newcommand{\maketoc}{
+   \renewcommand{\contentsname}{\hrule{\large\flushleft\sffamily\bfseries Contents\vspace{-1cm}}}
+   \setlength{\parskip}{0.1cm}
+   \phantomsection\tableofcontents % PJM: phantom section is needed to give \label something to point at.
+   \flushbottom
+   \vs\hrule
+}
+
+
+% --------------------------------------------------------------------
+
+% RECOMMENDATION COMMANDS
+
+%%% Recommendations should be phrased as verbs
+%%% Recommendations have one argument: a title
+
+%%% Use \recommendation[tag]{title}
+%%% \recommendationref{tag} will echo the recommendation number
+%%% \pageref{tag} will return the recommendation number
+
+% \recommendationnum is used for labeling recommendations. Since recommendations
+% belong to charge area, their numbers include the headerstring (eg "FW")
+% "\recommendationnum" -> "FW:1"
+\newcommand{\recommendationnum}{%
+    \headerstring:\therecommendation
+}
+
+% \recommendationstring is how the recommendation title will appear in the text.
+% "\recommendation[no-windows]{Don't Support Windows}"
+%     -> "Recommendation ENV:1 - Don't Support Windows"
+% The hyperlink takes you to the list of recommendations, so you can see it in context
+\newcommand{\recommendationstring}[2]{\hyperref[tor:\recommendationnum]{\textbf{Recommendation \recommendationnum: We should #2}}}
+% Version without hyperlink to list of recommendations:
+% \newcommand{\recommendationstring}[2]{\textcolor{DESCred}{\textbf{Recommendation \recommendationnum -- #2}}}
+
+% \recommendationliststring is how the recommendation title will appear in
+% the list of recommendations.
+%     -> "ENV:1 – Don't Support Windows"
+% The hyperlink takes you to the start of the recommendation text.
+\newcommand{\recommendationliststring}[1]{\hyperref[\thisrecommendationname]{\textbf{\recommendationnum}} -- we should #1}
+
+% \recommendationrefstring is the text that will appear when a recommendation is cited.
+% "recommendation~\recommendationref{no-windows}"  -> "recommendation ENV:1"
+\newcommand{\recommendationrefstring}{\recommendationnum}
+
+% \printrecommendation is used to write the recommendation title line itself.
+\newcommand{\printrecommendation}[1]{\noindent{#1}}
+
+% \recommendationref is the function to use when referring to a recommendation.
+\newcommand{\recommendationref}[1]{\noindent \ref{#1}}
+
+% Which section's table are we goingto be adding to?
+\newcommand{\recommendationtable}{\headerstring.tor}
+
+% \makerecommendation is run when \recommendation{} is called. Note the
+% use of the paragraph counter to provide an anchor for hyperref.
+
+\newcommand{\makerecommendation}[3]{
+   \stepcounter{recommendation}
+   \vskip 0.2in
+   \refstepcounter{paragraph} % This puts an anchor right before the title line.
+   % Write the recommendation title and summary:
+   \printrecommendation{\recommendationstring{#1}{#2}}
+   \newline\noindent{{\it {#3}}}
+   \vskip 0.2in
+   % Add line to list of all recommendations, including a label to point to:
+   % \addcontentsline{tor}{recommendation}{\small\printrecommendation{\recommendationliststring{#2}}\hfill}
+   \addcontentsline{tor}{recommendation}{\leavevmode\newline\small\printrecommendation{\recommendationliststring{#2}}\hfill\protect\phantomsection\protect\label{tor:\recommendationnum}}
+   % \myaddcontentsline{tor}{recommendation}{\small\printrecommendation{~~~~\recommendationliststring{#2}}\hfill}{#1}
+   % Add line to this sections's table of recommenandations:
+   \addcontentsline{\recommendationtable}{recommendation}{\leavevmode\newline\small\printrecommendation{\recommendationliststring{#2}}\hfill}
+}
+
+% The recommendation command itself - make a new recommendation (which prints
+% a title line, advances the paragraph counter, then prints the summary) and label it for
+% referring to it elsewhere.
+\newcommand{\recommendation}[3][]{
+   \def\thisrecommendationname{#1}
+   \def\thisrecommendationtitle{#2}
+   \def\thisrecommendationsummary{#2}
+   \makerecommendation{#1}{#2}{#3}
+   \relabel{\recommendationrefstring}{#1}{paragraph.\thechapter.\theparagraph}
+ }
+
+
+% --------------------------------------------------------------------
+
+% NAVIGATION
+
+\newcommand{\footernavigationbar}
+{
+    \it\footnotesize Go to:
+    \hyperref[toc]{the table of contents} % Table of Contents
+    \ifthenelse{\equal{\headerstring}{}}
+   	    {}
+        {
+        	% $\bullet$ \nameref{sec:\headerstring}
+            $\bullet$ \hyperref[sec:\headerstring]{the start of this section}
+  			$\bullet$ \hyperref[sec:TOR]{the list~of~recommendations}
+        }
+}
+
+\newcommand{\quickref}[1]{\ref{#1}~\nameref{#1}}
+
+% --------------------------------------------------------------------
+
+% DEADLINE DATES
+
+%%%%%%% DESC MANAGEMENT TO ADJUST THE DATES BELOW WHEN NEEDED %%%%%%%%
+
+% Calendar years. The first quarter, Q1,
+% is taken to be Jan, Feb and Mar. The end of 2017 Q1 would be 03/17.
+% Starts of Q1,Q2,Q3,Q4 -> 01/YY, 04/YY, 07/YY, 10/YY
+%   Ends of Q1,Q2,Q3,Q4 -> 03/YY, 06/YY, 09/YY, 12/YY
+
+% DC1:
+\def\StartofDCOne{10/15}
+\def\StartofDCOneRQ{\StartofDCOne}
+\def\EndofDCOneRQ{12/15}
+\def\StartofDCOneDP{01/16}
+\def\EndofDCOneDP{09/16}
+\def\StartofDCOneDA{10/16}
+\def\EndofDCOneDA{06/17}
+\def\EndofDCOne{\EndofDCOneDA}
+
+% DC2:
+\def\StartofDCTwo{10/16}
+\def\StartofDCTwoRQ{\StartofDCTwo}
+\def\EndofDCTwoRQ{12/16}
+\def\StartofDCTwoDP{01/17}
+\def\EndofDCTwoDP{12/17}
+\def\StartofDCTwoDA{01/18}
+\def\EndofDCTwoDA{12/18}
+\def\EndofDCTwo{\EndofDCTwoDA}
+
+% DC3:
+\def\StartofDCThree{01/18}
+\def\StartofDCThreeRQ{\StartofDCThree}
+\def\EndofDCThreeRQ{03/18}
+\def\StartofDCThreeDP{04/18}
+\def\EndofDCThreeDP{03/19}
+\def\StartofDCThreeDA{04/19}
+\def\EndofDCThreeDA{03/20}
+\def\EndofDCThree{\EndofDCThreeDA}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Other useful dates:
+
+% US financial years. The first quarter, Q1,
+% is taken to be Sept, Oct and Nov. The end of 2017 Q1 would be 11/17.
+% Starts of Q1,Q2,Q3,Q4 -> 09/Y-, 12/Y-, 03/YY, 06/YY
+%   Ends of Q1,Q2,Q3,Q4 -> 11/Y-, 02/Y-, 05/YY, 08/YY
+% This macro works correctly in the text, but cannot be used in place of a
+% datestring argument (#1) in the \recommendation command. I (PJM) don't
+% know why.
+\newcommand{\FY}[2]{%
+% eg \FY{16}{1} -> "11/15"
+\newcount\year
+\ifthenelse{\equal{#2}{Q1}}%
+{%
+  \year=\numexpr#1-1\relax
+  {11/\the\year}%
+}{%
+  \year=#1%
+  \ifthenelse{\equal{#2}{Q2}}{02/\the\year}{%
+  \ifthenelse{\equal{#2}{Q3}}{05/\the\year}{%
+  {08/\the\year}%
+}}}%
+}
+
+
+
+\newcommand{\deadline}[1]{%
+% Parse the datestring provided. Possible options are '??/??',
+% '05/17', '5/17', DC1, etc. Default is that date string is
+% passed through as is. '??/??' needs
+% processing, though.
+%
+% Relative dates, passed in by keywords like "DC1", will appear in
+% regular (not bold) type, to show that they might change with the
+% collaboration's schedule.
+%
+% "DC1" is interpreted to mean the end of the data analysis of DC1.
+% Later on we might think about allowing more complex arguments, such as
+% "DC1-analysis-start".
+%
+% US financial years are assumed, so that the first quarter, Q1,
+% is taken to be Sept, Oct and Nov. The end of 2017 Q1 would be 11/17.
+% Q1,Q2,Q3,Q4 -> 11, 2, 5, 8
+%
+% First set the correct era.
+% This is the big one: any undefined date gets set to the end of
+% the current key project's data challenge era:
+\ifthenelse{\equal{#1}{??/??}}%
+    {\def\era{\thisrecommendationsera}}%
+    {\def\era{#1}}%
+% This works correctly: era is now either set to "DC1", "DC2" or "DC3"
+% (if "??/??" was chosen), or the argument provided.
+%
+% Inputs to the \recommendation date argument can themselves be macros,
+% for example:
+%   \recommendation[D:SL-DC1-TDC2:DP1]{\EndofDCOneDC}{\SLTDCtwo Simulated Light Curves}
+% This is the preferred way of passing in this information.
+% You can also pass in one of the DC names, and it will be
+% interpreted as the end date of that DC era, as set by DESC mgmt above.
+% This will get set in lightweight font, because its a pretty
+% vague timeline!
+\ifthenelse{\equal{\era}{DC1}}{\def\duedate{\EndofDCOne}}{%
+\ifthenelse{\equal{\era}{DC2}}{\def\duedate{\EndofDCTwo}}{%
+\ifthenelse{\equal{\era}{DC3}}{\def\duedate{\EndofDCThree}}{%
+% Now we get to the situation where the date was either
+% explicitly set, or left as ??/??. The question marks should
+% be replaced with \thisrecommendationsera, but if this has happened,
+% we set the date in lightweight font. An explicit due date setting is
+% set in bold.
+\ifthenelse{\equal{#1}{??/??}}{\def\duedate{\era}}{%
+% else: the date was set by hand.
+\def\duedate{{\bf{\era}}}%
+% The following line closes this huge nested if block. There must
+% be as many '}' characters on this line as there are 'ifthenelse'
+% lines above.
+}}}}
+% Finally, render the due date, as a hyperlink to the timeline chart:
+\hyperref[fig-DC]{\duedate}
+}% End of \deadline macro.
+
+
+% Possible extensions to \deadline
+% --------------------------------
+%
+% Automatically detect the recommendation type from a name like
+% "D:KPNAME:TYPE:NUMBER" - which would need all recommendation names to
+% follow this convention, probably...
+% Splitting strings:
+%   http://tex.stackexchange.com/questions/12810/how-do-i-split-a-string
+%
+% Parse deadlines like DC1-analysis-end?
+%
+%   Need to be able to split a string like "05/17" and subtract 7 months
+%   from it.
+%
+% Enabling dates minus some number of months?
+%
+%   See the following for arithmetic in latex:
+%   http://tex.stackexchange.com/questions/133317/how-to-add-subtract-multiply-and-divide-in-plain-tex
+%
+% --------------------------------------------------------------------
+
+% Bibliography stuff:
+
+\bibpunct[, ]{(}{)}{;}{a}{}{,}
+
+% Rename bibliography sections and make everything more compact:
+\renewcommand\bibname{\normalsize References}
+
+% PJM (for the Science Book): This command makes latex set up the bibliography as a section*, not
+% a chapter. Need to add a markboth command too, below...
+% PJM (for the SRM): Not sure this is working...
+% \renewcommand\bibsection{\chapter*{\refname}}
+\renewcommand\bibsection{\section*{\refname}}
+% PJM 10/10/09: need this switch to change marking of appendix headers:
+\newboolean{appendix}
+\setboolean{appendix}{false}
+
+\let\oldthebibliography=\thebibliography
+\let\endoldthebibliography=\endthebibliography
+\renewenvironment{thebibliography}[1]{%
+  \begin{oldthebibliography}{#1}%
+    % Make sure the references line gets into the contents table - note spacing!
+    % \addcontentsline{toc}{chapter}{\hspace{2em}References}
+    \addcontentsline{toc}{section}{References}
+    % \footnotesize
+    % \setlength{\parskip}{0ex}%
+    % \setlength{\itemsep}{0ex}%
+    % PJM 10/10/09: Appendix reference section headers need to be marked with
+    % "Appendix" not "Chapter"
+    % \ifthenelse{\boolean{appendix}}{
+    %   \markboth{Appendix\ \thechapter: References}{Appendix\ \thechapter: References}
+    % }{
+    %   \markboth{Chapter\ \thechapter: References}{Chapter\ \thechapter: References}
+    % }
+}%
+{%
+  \end{oldthebibliography}%
+}
+
+%=====================================================================
+
+\makeatother
+
+%=====================================================================
+% Add your macros here for all to use!
+
+% LSST Project terminology:
+\newcommand{\LevelTwo}{{Level~2}\xspace}
+\newcommand{\LevelThree}{{Level~3}\xspace}
+\newcommand{\CC}{LSSTComCam\xspace}
+\newcommand{\MultiFit}{{\sc MultiFit}\xspace}
+\newcommand{\photoz}{photo-$z$\xspace}
+\newcommand{\Nbody}{$N$-body\xspace}
+
+
+% DESC-related software
+\newcommand{\astropy}{{\sc astropy}\xspace}
+\newcommand{\CAMB}{{\sc CAMB}\xspace}
+
+
+% Image simulation tools:
+\newcommand{\PhoSim}{{\sc PhoSim}\xspace}
+\newcommand{\OpSim}{{\sc OpSim}\xspace}
+\newcommand{\CatSim}{{\sc CatSim}\xspace}
+\newcommand{\GalSim}{{\sc GalSim}\xspace}
+
+% Data Products used by more than one WG
+\newcommand{\DADConeHalocat}{\hyperref[KP:DA-DC1-HC]{{\bf\texttt{HaloCat}}}\xspace}%{{\bf\texttt{HaloCat\,1.0}}}\xspace}
+\newcommand{\DATwinklesone}{\hyperref[KP:DA-DC1-TW1]{{\bf\texttt{Twinkles\,1}}}\xspace}%{{\bf\texttt{Twinkles\,1.0}}}\xspace}
+\newcommand{\DATwinklestwo}{\hyperref[KP:DA-DC2-TW2]{{\bf\texttt{Twinkles\,2}}}\xspace}%{{\bf\texttt{Twinkles\,2.0}}}\xspace}
+\newcommand{\DADCtwomockLC}{\hyperref[KP:DA-DC2-LC]{{\bf\texttt{DC2 Mock Lightcone}}}\xspace}
+\newcommand{\DADCthreemockCC}{\hyperref[KP:DA-DC3-CC]{{\bf\texttt{DC3 Mock ComCam Survey}}}\xspace}
+\newcommand{\DADCthreemockLC}{\hyperref[KP:DA-DC3-LC]{{\bf\texttt{DC3 Mock Lightcone}}}\xspace}
+\newcommand{\DADConeDeep}{\hyperref[KP:DA-DC1-PHO-D]{{\bf\texttt{DC1 Phosim Deep}}}\xspace}
+\newcommand{\DADConeWide}{\hyperref[KP:DA-DC1-PHO-W]{{\bf\texttt{DC1 Phosim Wide}}}\xspace}
+\newcommand{\DADCtwoWide}{\hyperref[KP:DA-DC2-PHO-W]{{\bf\texttt{DC2 Phosim Wide}}}\xspace}
+%\newcommand{\DADCtwomocks}{\hyperref[KP:DA-DC2-mock]{{\bf\texttt{DESC DC2 Mock Galaxy Catalogs}}}\xspace}
+%\newcommand{\DAGREAT}{\hyperref[KP:DA-DC1-GREAT]{{\bf\texttt{GREAT DESC}}}\xspace}
+% Weak Lensing software tools:
+\newcommand{\WLImSim}{\hyperref[tab:WL:software]{\sc WLImSim}\xspace}
+\newcommand{\WLShearPipe}{\hyperref[tab:WL:software]{\sc WLShearPipe}\xspace}
+\newcommand{\WLTwopoint}{\hyperref[tab:WL:software]{\sc WLTwopoint}\xspace}
+\newcommand{\WLNullTest}{\hyperref[tab:WL:software]{\sc WLNullTest}\xspace}
+\newcommand{\WLCosmo}{\hyperref[tab:WL:software]{\sc WLCosmo}\xspace}
+\newcommand{\WLMagPipe}{\hyperref[tab:WL:software]{\sc WLMagPipe}\xspace}
+\newcommand{\WLNPoint}{\hyperref[tab:WL:software]{\sc WLNPoint}\xspace}
+\newcommand{\WLBlendBias}{\hyperref[tab:WL:software]{\sc WLBlendBias}\xspace}
+% LSS definition
+\newcommand{\LSScatalog}{\hyperref[tab:LSS:software]{\sc LSScatalog}\xspace}
+\newcommand{\LSStwopoint}{\hyperref[tab:LSS:software]{\sc LSStwopoint}\xspace}
+\newcommand{\LSSthreepoint}{\hyperref[tab:LSS:software]{\sc LSSthreepoint}\xspace}
+\newcommand{\LSSsyspre}{\hyperref[tab:LSS:software]{\sc LSSsyspre}\xspace}
+\newcommand{\LSSsyshunter}{\hyperref[tab:LSS:software]{\sc LSSsyshunter}\xspace}
+\newcommand{\LSSCross}{\hyperref[tab:LSS:software]{\sc LSSCross}\xspace}
+\newcommand{\LSSCosmo}{\hyperref[tab:LSS:software]{\sc LSSCosmo}\xspace}
+
+% Galaxy Clusters software tools
+\newcommand{\CLOptCat}{\hyperref[tab:CL:software]{\sc CLOptCat}\xspace}
+\newcommand{\CLFinder}{\hyperref[tab:CL:software]{\sc CLFinder}\xspace}
+\newcommand{\CLPanCat}{\hyperref[tab:CL:software]{\sc CLPanCat}\xspace}
+\newcommand{\CLRedshift}{\hyperref[tab:CL:software]{\sc CLRedshift}\xspace}
+\newcommand{\CLSmurfs}{\hyperref[tab:CL:software]{\sc CLSmurfs}\xspace}
+\newcommand{\CLMassMod}{\hyperref[tab:CL:software]{\sc CLMassMod}\xspace}
+\newcommand{\CLShear}{\hyperref[tab:CL:software]{\sc CLShear}\xspace}
+\newcommand{\CLAbsMass}{\hyperref[tab:CL:software]{\sc CLAbsMass}\xspace}
+\newcommand{\CLRelMass}{\hyperref[tab:CL:software]{\sc CLRelMass}\xspace}
+\newcommand{\CLForecast}{\hyperref[tab:CL:software]{\sc CLForecast}\xspace}
+\newcommand{\CLCosmo}{\hyperref[tab:CL:software]{\sc CLCosmo}\xspace}
+
+% Supernova software tools
+%   [we can't let SL be the only ones with cool-looking names]
+\newcommand{\SNRealizer}{\hyperref[tab:SN:software]{\sc SupernovaRealizer}\xspace}
+\newcommand{\SNMonitor}{\hyperref[tab:SN:software]{\sc SupernovaMonitor}\xspace}
+\newcommand{\SNType}{\hyperref[tab:SN:software]{\sc SupernovaType}\xspace}
+\newcommand{\SNDistance}{\hyperref[tab:SN:software]{\sc SupernovaDistance}\xspace}
+\newcommand{\SNCadence}{\hyperref[tab:SN:software]{\sc SupernovaCadence}\xspace}
+
+% Photo-z software tools
+\newcommand{\PZGalaxyGenerator}{\hyperref[tab:PZ:software]{\sc PZGalaxyGenerator}\xspace}
+\newcommand{\PZPDF}{\hyperref[tab:PZ:software]{\sc PZPDF}\xspace}
+\newcommand{\PZCalibrate}{\hyperref[tab:PZ:software]{\sc PZCalibrate}\xspace}
+\newcommand{\PZSpeczSelector}{\hyperref[tab:PZ:software]{\sc PZSpeczSelector}\xspace}
+%Photo-z Datasets
+\newcommand{\PZColor}{\hyperref[KP:PZ:DC12]{\bf\texttt{PZColor}}\xspace}
+\newcommand{\PZIncomplete}{\hyperref[KP:PZ:DC12]{\bf\texttt{PZIncomplete}}\xspace}
+\newcommand{\PZCrossCorr}{\hyperref[KP:PZ:DC2_cor]{\bf\texttt{PZCrossCorr}}\xspace}
+\newcommand{\PZSzTrain}{\hyperref[KP:PZ:ext_spec]{\bf\texttt{PZSzTrain}}\xspace}
+\newcommand{\PZNIR}{\hyperref[KP:TJP-DC3-kp3]{\bf\texttt{PZNIR}}\xspace}
+
+% Strong Lensing software tools:
+\newcommand{\SLFinder}{\hyperref[tab:SL:software]{\sc SLFinder}\xspace}
+\newcommand{\SLMonitor}{\hyperref[tab:SL:software]{\sc SLMonitor}\xspace}
+\newcommand{\SLTimer}{\hyperref[tab:SL:software]{\sc SLTimer}\xspace}
+\newcommand{\SLMassMapper}{\hyperref[tab:SL:software]{\sc SLMassMapper}\xspace}
+\newcommand{\SLEnvCounter}{\hyperref[tab:SL:software]{\sc SLEnvCounter}\xspace}
+\newcommand{\SLModeler}{\hyperref[tab:SL:software]{\sc SLModeler}\xspace}
+\newcommand{\SLCosmo}{\hyperref[tab:SL:software]{\sc SLCosmo}\xspace}
+% Strong Lensing datasets:
+\newcommand{\SLTDCtwo}{\hyperref[KP:SL-DC1-TDC2]{\texttt{TDC2}}\xspace}
+\newcommand{\SLTDCthree}{\hyperref[KP:SL-DC3-TDC3]{\texttt{TDC3}}\xspace}
+\newcommand{\SLDCtwoReal}{\hyperref[]{\texttt{DC2 Real Data}}\xspace}
+% Theory / Joint Probes software tools
+\newcommand{\TJPForecast}{\hyperref[tab:TJP:software]{\sc TJPForecast}\xspace} % Joint probe covariance matrix
+\newcommand{\TJPCosmo}{\hyperref[tab:TJP:software]{\sc TJPCosmo}\xspace} % Joint probe covariance matrix
+\newcommand{\TJPCov}{\hyperref[tab:TJP:software]{\sc TJPCov}\xspace} % Joint probe covariance matrix
+
+% Cosmology analysis tools
+\newcommand{\CosmoSIS}{{\sc CosmoSIS}\xspace}
+\newcommand{\CosmoLike}{{\sc CosmoLike}\xspace}
+
+% Journals
+\newcommand{\apj}{ApJ}
+\newcommand{\apjl}{ApJL}
+\newcommand{\apjs}{ApJS}
+\newcommand{\mnras}{MNRAS}
+\newcommand{\apss}{Ap \& SS}
+\newcommand{\aap}{A\&A}
+\newcommand{\aj}{AJ}
+\newcommand{\prd}{Phys. Rev. D}
+\newcommand{\nat}{Nature}
+\newcommand{\araa}{ARA\&A}
+\newcommand{\jgr}{J. Geophys. Res.}
+\newcommand{\pasp}{PASP}
+
+% Bits and pieces
+\newcommand{\etal}{et~al.~}
+\newcommand{\eg}{{\it e.g.\ }}
+\newcommand{\ie}{{\it i.e.\ }}
+\newcommand{\etc}{{\it etc.\ }}
+
+% Colors, commenting etc:
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{green}{rgb}{0.0,0.5,0.0}
+\definecolor{DESCred}{rgb}{0.63,0.00,0.20} % {#A10034}
+% Guidance at http://latexcolor.com/
+% \newcommand{\question}[2]{\textcolor{red}{\bf Question from #1: #2}}
+\newcommand{\flag}[2]{\textcolor{red}{\bf #1: #2}}
+% \newcommand{\new}[1]{\textcolor{green}{#1}}
+\newcommand{\black}[1]{\textcolor{black}{#1}}
+\newcommand{\gray}[1]{\textcolor{gray}{#1}}
+
+\newcommand{\new}[1]{\textcolor{blue}{#1}}
+\newcommand{\question}[2]{\textcolor{blue}{{\bf Question from #1: #2}}} % eg \question{PJM}{Shouldn't this be ``better''?}
+\newcommand{\comment}[2]{\textcolor{blue}{{\bf #1: #2}}} % eg \comment{RXD}{This will likely be too expensive.}
+
+
+% Cross-referencing definitions:
+\newcommand{\define}[1]{\textcolor{DESCred}{\it{\bf #1}}\phantomsection\label{#1}}
+\newcommand{\lookup}[1]{\hyperref[#1]{#1}}
+
+%=====================================================================

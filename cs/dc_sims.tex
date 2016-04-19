@@ -1,0 +1,131 @@
+% ====================================================================
+\section{Key Simulations for the Data Challenges}
+\resetnumbering
+\label{sec:keysims}
+% ====================================================================
+
+
+% --------------------------------------------------------------------
+
+\subsection{Introduction}
+\label{sec:keysims:introduction}
+
+The DESC has defined three data challenges in the SRM that are based on simulated and real data. Since these data challenges are central to our simulation plans, we will give a brief overview here including the timelines for the delivery of the simulated data sets. The first data challenge, DC1, is largely tailored to the individual working groups' needs. This data challenge is mainly based on already available simulations with the aim to work closely with the individual working groups to create catalogs that satisfy their near-term needs. The data generation period for DC1 is therefore ongoing, spanning Q1/2016 to Q3/2016. DC2 will involve more cross-working group analyses and the simulations will provide more details close to the LSST survey. The requirements for DC2 are currently collected by the Cosmological Simulation WG (following DC1 Key Project CS3 of the SRM). This key project will be finished at the end of Q4/2016. The data generation for DC2 will then follow in Q1/2017 to Q4/2017. Finally, DC3 will be a collaboration wide data challenge, providing simulated catalogs similar in scale and complexity to LSST Year 1 data. The requirements for DC3 will be finalized by Q1/2018 and the data generation for DC3 is planned for Q2/2018 to Q1/2019. In the following we will provide details about the simulations underlying the different DCs, the catalog development plan, as well as data handling, manipulation, and distribution.
+
+\subsection{Data Challenge 1}
+\label{sec:keysims:dc1}
+
+As outlined above, the data generation phase for DC1 is ongoing and will finish in the third quarter of 2016. 
+
+\subsubsection{Simulation Generation}
+\label{sec:keysims:dc1:simgen}
+As mentioned in the Introduction, the simulations underlying DC1 are already in hand. The simulations are listed in DC1 Key Project DG1, HaloCat Dataset Production, in the SRM. In detail, these are:
+\begin{itemize}
+
+\item The Outer Rim simulation, a $(4.225 $Gpc$)^3$ volume with a mass resolution of $\sim 2\cdot 10^9$M$_\odot$ to deliver cluster shear maps and cluster mass function predictions -- this simulation will also play a central role in DC2 for synthetic sky catalog generation. The simulation has been carried out by the Argonne group under the DOE INCITE program on Mira, a supercomputer hosted at the Argonne Leadership Computing Facility (ALCF) using HACC (the Hardware/Hybrid Accelerated Cosmology Code). Some of the analysis of the simulation is still ongoing under a current ALCC allocation. A smaller version of the simulation (at the same mass resolution) is currently used for development work by the Argonne group in particular geared toward mock catalog generation.
+
+\item the Mira-Titan Universe simulation suite, a set of $w_0-w_a$-massive neutrino simulations in $(2.1$Gpc$)^3$ and $(5$Gpc$)^3$ volumes with a mass resolution of $\sim10^{10}$M$_\odot$ and $\sim 10^{11}$M$_\odot$, respectively, for LSS studies and mass function studies across different cosmologies. This simulation set is also used to develop predictions for different cosmological measurements as outlined in DC1 Key Project CS6. The simulations are carried out by the Argonne group as part of a DOE INCITE allocation, using Mira as well as Titan, the supercomputer at Oak Ridge Leadership Computing Facility. As for the Outer Rim simulation, this simulation suite is carried out with HACC.
+
+\item the Buzzard galaxy catalog, based on a light-cone derived from a range of simulation boxes varying in size between $(1$Gpc$)^3$ and $(4$Gpc$)^3$. These simulations were carried out by the Stanford group and collaborators with the publicly available Gadget-2 code. This galaxy catalog is currently also used by the DES collaboration.
+
+\end{itemize}
+
+In addition, as outlined in Deliverable CX5.3CS, the collaboration will make use of publicly available data for gravity-only as well as hydrodynamics simulations. Finally, as part of the DESC centric simulation generation on NERSC systems, the CMU group has carried out a gravity-only simulation that employs the same initial conditions as the MassiveBlack-II simulation which includes hydrodynamics effects. This set of two simulations is extremely valuable to develop synthetic catalogs with different methods and to investigate different astrophysical systematic effects. The simulations are the highest mass resolution simulations that currently exists within the DESC collaboration. The hydrodynamics simulation, MassiveBlackII has been used for some preliminary intrinsic alignment (IA) studies. For future work in this direction, larger volumes will be required. This challenge will be addressed in the time frame of DC3. Possible modeling of IAs on gravity-only simulation results based on the insights from this smaller volume hydro simulations are currently under investigation. {\bf check with Rachel/Tiziana if this is correctly stated}.
+
+The TJP group has carried out studies on the effect of baryonic physics on the matter power spectrum, using publicly available hydrodynamics simulations (mainly the OWLs set) as well as a set of simulations carried out by Nick Gnedin with the hydro version of ART. These simulations span a wide range of effects and have guided the development of possible mitigation schemes.
+
+The CMU group is planning to use MP-Gadget for a set of hydrodynamics simulations during 2016 that can be used for some of the studies outlined in the SRM.
+
+To summarize, the collaboration has access to a range of simulations that should be sufficient to successfully carry out all tasks and key projects related to DC1. {\bf Should we go through the SRM and list all the tasks that require simulations? I have marked them, so could do that.}
+
+\subsubsection{Catalog Development}
+\label{sec:keysims:dc1:dev}
+
+A major challenge for the DESC collaboration is the development of realistic synthetic sky maps that cover the LSST footprint. The focus for DC1 within the CS WG is on the generation, testing, and validation of these sky maps albeit in smaller volumes than required for DC2 and DC3. The idea is to generate samples of galaxies that have all the required properties for DC2 and DC3 and to validate their properties. 
+
+A task force has been assembled to investigate and compare different mock generation mechanisms. These range from HOD (Halo Occupation Distribution) models and enhanced versions of this approach (iHOD), to Abundance Matching (AM) and Subhalo Abundance Matching  (SHAM) methods, to semi-analytic methods (SAMs). All methods are currently implemented on the high-resolution gravity-only version of the MassiveBlackII simulations (called DM). Starting from the same underlying simulation and merger trees the comparison allows for systematic studies of the different methods for generating galaxy catalogs. We are currently investigating two catalogs based on SAMs (by the Brazil group and the Argonne/Berkeley/Carnegie collaboration), one AM catalog (by the Stanford group) and one iHOD catalog (by the CMU group). In addition, we have a galaxy catalog based on the original hydrodynamics simulation.
+
+In order to validate the correctness of the catalogs, we are developing a web-based validation framework at NERSC (originally developed and implemented by Ricker at UIUC and now also partially supported by Uram at Argonne) that allows automated tests of the catalogs against well-defined data sets and measurements. The validation tests include currently the measurement of the stellar mass function, color-color diagrams, and correlation function, mass function, and halo mass vs. stellar mass scatter plots are currently implemented. The first set of tests are developed by students and junior researchers from across the collaboration (currently UW, Stanford, CMU, LBNL). In future we are planning to tightly involve the analysis working groups in providing validation data sets, validation metrics, and validation tests that can be incorporated into the framework. Discussions with the working groups have started. In the longer term, the framework will enable the simulation teams to validate their catalogs in a controlled and fast fashion but also will allow the whole DESC collaboration to select the mock catalogs that fulfill the requirements for their specific tasks. The validation task is captured in DC1 Key Project CS4.
+
+While the implementation of the validation framework and the generation of the catalogs from the DM simulation are very focused on CS WG work, we have also started to interact with the photo-z WG due to their needs for sample catalogs as part of DC1. A set of catalogs has been delivered and currently is refined to provide more realistic colors. For example, dust is currently included into these catalogs. 
+
+In parallel with the current catalog development, the requirements for DC2 are being discussed with the analysis working groups and captured in a Github repository, addressing DC1 Key project CS3. 
+
+\subsubsection{Simulation Handling, Manipulation, and Distribution}
+\label{sec:keysims:dc1:handling}
+
+Once the catalogs are produced, they will be ingested into a database that can be then connected to the CatSim/PhoSim framework {\bf Simon: you should refine this!}. In order to enable the connection between the catalogs and the further LSST pipeline to create realistic skies, a minimal set of galaxy properties has to be available. As part of DC1 Key Projects CS1 and CS2 we are developing currently standardized project wide definitions for galaxy observables and are working on a framework that allows easy mapping of the simulations to observable galaxy parameters. We will also deliver a code library written against the LSST CatSim APIs to execute the mapping.
+
+This will require a tight collaboration between (i) the simulation groups and the CatSim/PhoSim developers to ensure that all catalogs generated have the required input information, (ii) the analysis working groups and the simulation group and CatSim/PhoSim developers to ensure that all required observables are covered. As part of DC1 the CS WG will deliver a set of standard definitions that will then enable the creation of DC2 and DC3 catalogs that can be ingested into the LSST simulation pipeline. These tasks are all very focused on the CS WG itself rather than cross-connecting to other groups at this point. At the same time, we will ensure that all the requirements for DC2 and DC3 can be addressed within our framework.
+
+The general distribution of the simulation data is at this point not well developed. The catalogs are distributed in flat files (Fits or HDF5, depending on the group's preferences), stored at NERSC or in other places. This is clearly non-optimal and needs to be carefully addressed for DC2 and DC3.
+
+\subsection{Data Challenge 2}
+\label{sec:keysims:dc2}
+
+The data generation for DC2 will be carried out during calendar year 2017. The simulations will involve gravity-only as well as hydrodynamics simulations.
+
+\subsubsection{Simulation Generation}
+\label{sec:keysims:dc2:simgen}
+
+As stated in DC2 Key Project DG5 in the SRM, the simulations for the light cone catalogs are already in place. In detail, we will use
+\begin{itemize}
+\item the Outer Rim simulation, described already above under DC1
+\item the QContinuum simulation, a smaller volume with (1.3Gpc)$^3$ but an order of magnitude higher mass resolution, carried out on Titan at the OLCF by the Argonne group. 
+\end{itemize}
+Detailed analyses of both simulations are ongoing and will be finalized later in 2016. Therefore, two complete simulation datasets including detailed merger trees and substructure tracking will be available to generate synthetic skies in the 2017 time frame. The Argonne group has also submitted a new ALCC proposal to obtain simulation time to carry out another QContinuum like simulation with a different cosmology. For DC2 current plans are focusing on LCDM models for the large galaxy catalogs.
+
+The TJP group in collaboration with CS will require a set of simulations for covariance studies as outlined in DC2 Key Project CS9. Such simulations might require a major resource allocation, depending on the approach taken. For some of the analysis groups, e.g. LSS, approximate catalogs might be sufficient. These are inexpensive and fast to generate. Nevertheless, some infrastructure might be needed to carry out a very large number of these in a concerted way. A separate document describing possible tasks for a Pipeline Scientist elaborates on the challenges posed by covariance studies. 
+
+In addition to the gravity-only simulations, some of the analysis working groups require hdyrodynamics simulations. In particular the cluster working group lists for DC2 the need for re-simulation of cluster-sized objects and TJP wishes to investigate possible systematic effects due to baryons on intrinsic alignments and the matter power spectrum following up on their work for DC1.
+
+The Argonne group is currently developing a hydrodynamics component to be integrated into HACC, based on an improved SPH approach. The development of the code is ongoing and the aim is to have a first complete version finished later in 2016. Argonne secured a large computing allocation to carry out a major hydrodynamics simulation on Theta, a new supercomputer that will arrive at the ALCF at the end of 2016. The simulation will be carried out in 2017 as part of DC2. Details of the simulation specification will be determined as part of DC1 Key Project CS7. Here, detailed tests about the effects of different subgrid models need to be investigated. The DESC collaboration has several groups working in this area at CMU, LBNL, UIUC, Fermilab and elsewhere. We will incorporate this large knowledge base into the testing of the new code to optimize the outcome of the new simulations.
+
+
+{\bf need statements from other groups, CMU, LBNL, UIUC, FNAL if they plan to carry out more hydro simulations}
+
+\subsubsection{Catalog Development}
+\label{sec:keysims:dc2:dev}
+
+As for DC1, the catalog development will be a major undertaking for the CS WG during 2017. The aim is to provide a DC2 Mock Light-cone as described in DC2 Key Project DG5. As outlined above we are planning to develop the needed infrastructure for testing, comparing, and validating mock catalogs during the DC1 time frame. We will also have converged on definitions and inputs for the LSST simulation pipeline (CatSim/PhoSim) to enable all groups that generate catalogs to interact with these additional tools. 
+
+For DC2, the catalogs have to be refined and at this point resemble the real universe closely. As outlined in DC1, we have two major approaches for generating mock catalogs, AM and HOD methods and SAMs. The main difference (in very simplified terms) is that the first set is very tightly coupled to tuning to observations to obtain catalogs that reproduce correct galaxy clustering, colors etc. while the SAMs are aiming at using models motivated by astrophysical effects to actually predict a range of galaxy properties. Obviously, the SAM models and modeling parameters are also tuned to match available observations. Both approaches have advantages and disadvantages -- we therefore believe that following both paths will be important to serve the different needs of the analysis working groups. For the SAMs, convergence studies and parameter optimization studies need to be carried out while for the AM and HOD methods, {\bf something}
+
+A major challenge for both approaches is the accurate modeling of high-redshift galaxies, in particular at the faint end. Understanding how to best model these galaxies will be a significant task for the DC2 data generation period. 
+Finally, for DC2 the analysis working groups will have to closely work together with the CS WG to provide necessary validation data sets.
+
+For the mass calibration work to be carried out by the Cluster Working Group, catalogs beyond the optical wavelength are needed. These maps will include SZ and X-ray maps. One approach that has been followed in the literature in the past is to paint gas physics effects on top of gravity-only simulations. The painting recipes have been informed by either hydrodynamics simulations or observations. The CS WG will work closely with the Cluster WG to explore this approach in detail. The advantage is that many recipes can be tested in post-processing while the hydrodynamics approach usually only allows a small number of trials with different subgrid modeling implemented.
+
+
+\subsubsection{Simulation Handling, Manipulation, and Distribution}
+\label{sec:keysims:dc2:handling}
+
+The data handling, manipulation, and distribution for DC2 will be a more centralized effort than for DC1 since the data will be used across working groups. Details for best practices for distributing the data still have to be developed. {\bf Simon et al: you should write here what you think will be done}
+
+\subsection{Data Challenge 3}
+\label{sec:keysims:dc3}
+
+This data challenge will most closely resemble LSST Year 1 data and the data generation will take place in 2018 and early 2019.
+
+\subsubsection{Simulation Generation}
+\label{sec:keysims:dc3:simgen}
+
+In the SRM in DC3 Key Project DG6 it is stated that for DC3 a (5Gpc)$^3$ volume simulation with mass resolution of 10$^8$M$_\odot$ will be required. This specification has to be revisited since in 2018 no machine with enough memory to carry out such a simulation will be available. Instead, we will generate smaller volumes and will stitch them together in a way to not generate any artifacts. Details for this approach will be refined long before 2018. The SRM is stating that two different cosmologies are needed at this scale. The exact reasons for two full 18,000 sq degree catalogs might be revisited during DC2. The Argonne HACC code is capable of scaling to any full machine available in 2018 and the exact specifications for the simulations will be worked out before then. The Argonne group is also continuously developing scalable analysis codes which are essential at the size of the planned data challenges.
+
+In 2018, the first of the major next-generation supercomputers, Summit will have arrived at the OLCF. Summit will have a performance of $\sim$ 150PFlops, employing NVIDIA's Volta GPUs (see http://www.nvidia.com/object/tesla-p100.html for HACC's excellent scaling predictions for next generation machines). The Argonne group secured an early science project on Summit (under the CAAR initiative at the OLCF). As part of this early science project, two hydrodynamics simulations will be carried out: one in a (1500Mpc)$^3$ volume for cluster studies and one in a (500Mpc)$^3$ for IA studies. These simulations will address DC3 Key Project CS10.
+
+\subsubsection{Catalog Development}
+\label{sec:keysims:dc3:dev}
+
+For DC3 the catalog development will closely follow the procedures and recipes developed for DC1 and DC2. At this point, most of the validation tasks should have been carried out and the major challenge is now to scale up the efforts from DC2 to generate a large area catalog. This task will mainly involve work on streamlining the post-processing tools that are used to generate the mock catalogs. These include ray-tracing codes, semi-analytic codes and abundance matching codes. The work on these tools will be continuously on-going during all three data challenges and should not be a major road block for DC3.
+
+\subsubsection{Simulation Handling, Manipulation, and Distribution}
+\label{sec:keysims:dc3:handling}
+
+As for DC1 and DC2, the tools here will remain the same. The major challenge will again be the scaling up of all the tools to handle the data volume expected. By 2018, this should not be a large problem anymore.
+
+% ====================================================================
+
+\vspace{\baselineskip}
+\hrule
+\clearpage

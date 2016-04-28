@@ -1,0 +1,14 @@
+
+*.log
+
+*.aux
+
+*.out
+
+*.pdf
+
+*.gz
+
+*.toc
+
+*.wrt
